@@ -1,0 +1,68 @@
+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+%YAML 1.2
+---
+$id: http://devicetree.org/schemas/interrupt-controller/xlnx,smmu-irq-csr.yaml#
+$schema: http://devicetree.org/meta-schemas/core.yaml#
+
+title: Xilinx Versal NET SMMU CSR Interrupt Controller
+
+maintainers:
+  - Anirudha Sarangi <anirudha.sarangi@amd.com>
+
+description:
+
+  The Versal Net platform includes a Xilinx-specific SMMU CSR (Control and
+  Status Register) block that acts as an intermediate interrupt controller
+  for ARM SMMUv3.
+
+  This block provides registers to enable, disable, and clear the standard
+  SMMUv3 interrupt sources, including EVENT, CMD_SYNC, PRI, and GLOBAL.
+
+  For SMMUv3 interrupts to be properly delivered, the corresponding enable
+  bits in this CSR block must be programmed. When an interrupt occurs, it
+  must first be acknowledged and cleared in this block before it is forwarded
+  to the parent interrupt controller (typically the GIC). Once forwarded,
+  the interrupt is then handled by the standard ARM SMMU driver.
+
+properties:
+  compatible:
+    const: xlnx,versal-net-smmu-csr
+
+  reg:
+    maxItems: 1
+
+  interrupt-controller: true
+
+  "#interrupt-cells":
+    const: 1
+
+  interrupts:
+    maxItems: 1
+
+required:
+  - compatible
+  - reg
+  - interrupt-controller
+  - "#interrupt-cells"
+  - interrupts
+
+additionalProperties: false
+
+examples:
+  - |
+    smmu_irq_csr: interrupt-controller@eca10000 {
+        compatible = "xlnx,versal-net-smmu-csr";
+        reg = <0xeca10000 0x1000>;
+        interrupt-controller;
+        #interrupt-cells = <1>;
+        interrupts = <169>;
+    };
+
+    iommu@ec000000 {
+        compatible = "arm,smmu-v3";
+        reg = <0xec000000 0x40000>;
+        #iommu-cells = <1>;
+        dma-coherent;
+        interrupt-parent = <&smmu_irq_csr>;
+        interrupts = <0>;
+    };
