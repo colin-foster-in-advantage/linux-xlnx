@@ -826,6 +826,7 @@ config SUNPLUS_SP7021_INTC
 config IRQCHIP_XILINX_SMMU_CSR
 	bool "Xilinx SMMU CSR Interrupt Driver"
 	depends on ARCH_ZYNQMP && IRQ_DOMAIN_HIERARCHY
+	default y
 	help
 	  This driver does the initial handling of SMMU interrupts before
 	  forwarding them to the ARM SMMU v3 driver.  It is intended for
