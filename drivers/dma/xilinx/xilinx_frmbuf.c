@@ -798,6 +798,11 @@ void xilinx_xdma_set_mode(struct dma_chan *chan, enum operation_mode
 {
 	struct xilinx_frmbuf_chan *xil_chan;
 
+	if (!chan) {
+		printk("Pointer error for xdma_set_mode - chan is NULL\n");
+		return;
+	}
+
 	xil_chan = frmbuf_find_chan(chan);
 	if (IS_ERR(xil_chan))
 		return;
