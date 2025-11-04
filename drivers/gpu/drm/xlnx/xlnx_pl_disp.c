@@ -588,6 +588,8 @@ static int xlnx_pl_disp_probe(struct platform_device *pdev)
 	struct xlnx_dma_chan *xlnx_dma_chan;
 	const struct drm_format_info *info;
 
+	printk("********* PL Disp Probe **********\n");
+
 	xlnx_pl_disp = devm_kzalloc(dev, sizeof(*xlnx_pl_disp), GFP_KERNEL);
 	if (!xlnx_pl_disp)
 		return -ENOMEM;
