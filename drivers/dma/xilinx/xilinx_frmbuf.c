@@ -800,6 +800,7 @@ void xilinx_xdma_set_mode(struct dma_chan *chan, enum operation_mode
 
 	if (!chan) {
 		printk("Pointer error for xdma_set_mode - chan is NULL\n");
+		dump_stack();
 		return;
 	}
 
