@@ -1159,6 +1159,10 @@ static int xvip_dma_s_ctrl(struct v4l2_ctrl *ctl)
 				return -EBUSY;
 
 			dma->low_latency_cap = true;
+
+			if (!dma->dma) {
+				printk("dma s ctrl ll error: dma->dma is NULL\n");
+			}
 			/*
 			 * Don't use auto-restart for low latency
 			 * to avoid extra one frame delay between
@@ -1170,6 +1174,10 @@ static int xvip_dma_s_ctrl(struct v4l2_ctrl *ctl)
 				return -EBUSY;
 
 			dma->low_latency_cap = false;
+			if (!dma->dma) {
+				printk("dma s ctrl error: dma->dma is NULL\n");
+			}
+
 			xilinx_xdma_set_mode(dma->dma, AUTO_RESTART);
 		} else if (ctl->val == XVIP_START_DMA) {
 			if (dma->low_latency_cap &&
